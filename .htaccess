@@ -1,0 +1,11 @@
+RewriteEngine On
+
+# Handle API requests
+RewriteRule ^api/login$ api/login.php [L,QSA]
+RewriteRule ^api/register$ api/register.php [L,QSA]
+RewriteRule ^api/group/info$ api/group/info.php [L,QSA]
+RewriteRule ^api/group/add$ api/group/add.php [L,QSA]
+RewriteRule ^api/group/remove$ api/group/remove.php [L,QSA]
+RewriteRule ^api/admin/users$ api/admin/users.php [L,QSA]
+RewriteRule ^api/admin/update$ api/admin/update.php [L,QSA]
+RewriteRule ^api/admin/delete$ api/admin/delete.php [L,QSA]
