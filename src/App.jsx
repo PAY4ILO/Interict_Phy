@@ -1,7 +1,7 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { AuthProvider } from './contexts/AuthContext';
+import { ToastProvider } from './contexts/ToastContext';
 import Header from './components/Header';
 import Home from './pages/Home';
 import LabView from './pages/LabView';
@@ -11,9 +11,10 @@ import Profile from './pages/Profile';
 
 function App() {
   return (
-    <AuthProvider>
-      <ThemeProvider>
-        <Router>
+    <ToastProvider>
+      <AuthProvider>
+        <ThemeProvider>
+          <Router>
           <Header />
           <main className="container animate-fade-in" style={{ flex: 1 }}>
             <Routes>
@@ -31,6 +32,7 @@ function App() {
         </Router>
       </ThemeProvider>
     </AuthProvider>
+    </ToastProvider>
   );
 }
 

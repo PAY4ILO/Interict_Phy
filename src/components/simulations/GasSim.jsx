@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const GasSim = () => {
     const canvasRef = useRef(null);
@@ -180,7 +180,7 @@ const GasSim = () => {
 
         const canvas = canvasRef.current;
         if (canvas) {
-            ctx = canvas.getContext('2d');
+            const ctx = canvas.getContext('2d');
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             simState.current.particles = initParticles(
                 parseInt(particleCount),
@@ -217,7 +217,6 @@ const GasSim = () => {
                 if (!isRunning) resetSim();
             }
         };
-        let ctx;
         window.addEventListener('resize', handleResize);
         setTimeout(handleResize, 100); // init delay
         return () => window.removeEventListener('resize', handleResize);
@@ -238,7 +237,7 @@ const GasSim = () => {
                     </div>
                     <div style={{ flex: 1, minWidth: '150px' }}>
                         <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '4px' }}>Частицы (n): {particleCount}</label>
-                        <input type="range" min="10" max="500" value={particleCount} onChange={e => setParticleCount(e.target.value)} disabled={isRunning} style={{ width: '100%', accentColor: 'var(--primary)' }} />
+                        <input type="range" min="10" max="500" value={particleCount} onChange={e => setParticleCount(e.target.value)} style={{ width: '100%', accentColor: 'var(--primary)' }} />
                     </div>
                 </div>
 

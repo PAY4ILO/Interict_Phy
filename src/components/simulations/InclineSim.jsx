@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const InclineSim = () => {
     const canvasRef = useRef(null);
@@ -146,13 +146,13 @@ const InclineSim = () => {
         };
         window.addEventListener('resize', handleResize);
         handleResize();
+        const currentSimState = simState.current;
         return () => {
             window.removeEventListener('resize', handleResize);
-            cancelAnimationFrame(simState.current.animationId);
+            cancelAnimationFrame(currentSimState.animationId);
         };
-        // eslint-disable-next-line
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
     useEffect(() => {
         if (!isRunning) {
             resetSim();
@@ -166,20 +166,20 @@ const InclineSim = () => {
                 <div style={{ display: 'flex', gap: '1rem', flex: 1, flexWrap: 'wrap' }}>
                     <div style={{ flex: 1, minWidth: '150px' }}>
                         <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '4px' }}>Угол наклона (°): {angle}</label>
-                        <input type="range" min="10" max="80" value={angle} onChange={e => setAngle(e.target.value)} disabled={isRunning} style={{ width: '100%', accentColor: 'var(--primary)' }} />
+                        <input type="range" min="10" max="80" value={angle} onChange={e => setAngle(e.target.value)} style={{ width: '100%', accentColor: 'var(--primary)' }} />
                     </div>
                     <div style={{ flex: 1, minWidth: '150px' }}>
                         <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '4px' }}>Масса (кг): {mass}</label>
-                        <input type="range" min="1" max="100" value={mass} onChange={e => setMass(e.target.value)} disabled={isRunning} style={{ width: '100%', accentColor: 'var(--primary)' }} />
+                        <input type="range" min="1" max="100" value={mass} onChange={e => setMass(e.target.value)} style={{ width: '100%', accentColor: 'var(--primary)' }} />
                     </div>
                     <div style={{ flex: 1, minWidth: '150px' }}>
                         <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '4px' }}>Коэфф. трения (μ): {friction}</label>
-                        <input type="range" min="0" max="1" step="0.05" value={friction} onChange={e => setFriction(e.target.value)} disabled={isRunning} style={{ width: '100%', accentColor: 'var(--primary)' }} />
+                        <input type="range" min="0" max="1" step="0.05" value={friction} onChange={e => setFriction(e.target.value)} style={{ width: '100%', accentColor: 'var(--primary)' }} />
                     </div>
                 </div>
 
                 <div style={{ display: 'flex', gap: '10px' }}>
-                    <button className="btn-primary" onClick={launch} disabled={isRunning} style={{ minWidth: '120px' }}>
+                    <button className="btn-primary" onClick={launch} style={{ minWidth: '120px' }}>
                         {isRunning ? 'Движение...' : 'ЗАПУСК'}
                     </button>
                     <button className="btn-secondary" onClick={resetSim}>

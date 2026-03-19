@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const CircularSim = () => {
     const canvasRef = useRef(null);
@@ -139,11 +139,12 @@ const CircularSim = () => {
         };
         window.addEventListener('resize', handleResize);
         handleResize();
+        const currentSimState = simState.current;
         return () => {
             window.removeEventListener('resize', handleResize);
-            cancelAnimationFrame(simState.current.animationId);
+            cancelAnimationFrame(currentSimState.animationId);
         };
-        // eslint-disable-next-line
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -159,15 +160,15 @@ const CircularSim = () => {
                 <div style={{ display: 'flex', gap: '1rem', flex: 1, flexWrap: 'wrap' }}>
                     <div style={{ flex: 1, minWidth: '150px' }}>
                         <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '4px' }}>Радиус (м): {radius}</label>
-                        <input type="range" min="5" max="40" value={radius} onChange={e => setRadius(e.target.value)} disabled={isRunning} style={{ width: '100%', accentColor: 'var(--primary)' }} />
+                        <input type="range" min="5" max="40" value={radius} onChange={e => setRadius(e.target.value)} style={{ width: '100%', accentColor: 'var(--primary)' }} />
                     </div>
                     <div style={{ flex: 1, minWidth: '150px' }}>
                         <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '4px' }}>Линейная Скорость (м/с): {velocity}</label>
-                        <input type="range" min="1" max="50" value={velocity} onChange={e => setVelocity(e.target.value)} disabled={isRunning} style={{ width: '100%', accentColor: 'var(--primary)' }} />
+                        <input type="range" min="1" max="50" value={velocity} onChange={e => setVelocity(e.target.value)} style={{ width: '100%', accentColor: 'var(--primary)' }} />
                     </div>
                     <div style={{ flex: 1, minWidth: '150px' }}>
                         <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '4px' }}>Масса (кг): {mass}</label>
-                        <input type="range" min="1" max="100" value={mass} onChange={e => setMass(e.target.value)} disabled={isRunning} style={{ width: '100%', accentColor: 'var(--primary)' }} />
+                        <input type="range" min="1" max="100" value={mass} onChange={e => setMass(e.target.value)} style={{ width: '100%', accentColor: 'var(--primary)' }} />
                     </div>
                 </div>
 

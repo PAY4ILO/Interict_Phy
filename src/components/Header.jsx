@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
-import { Sun, Moon, Atom, LogIn, User, Settings } from 'lucide-react';
+import { Sun, Moon, Atom, LogIn, User, Settings, Star } from 'lucide-react';
+import { useToast } from '../contexts/ToastContext';
 import AuthModal from './AuthModal';
 
 const Header = () => {
     const { theme, toggleTheme } = useTheme();
     const { user } = useAuth();
-    const navigate = useNavigate();
+    const { showToast } = useToast();
     const [isAuthOpen, setIsAuthOpen] = useState(false);
 
     return (
@@ -24,6 +25,12 @@ const Header = () => {
                     <Link to="/admin" style={{ color: '#ef4444', textDecoration: 'none', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
                         <Settings size={18} /> Управление
                     </Link>
+                )}
+
+                {user && user.role !== 'admin' && user.plan !== 'advanced' && (
+                    <button onClick={() => showToast('В данный момент покупка тарифа недоступна. Повторите попытку позже.', 'error')} style={{ background: 'linear-gradient(135deg, #f59e0b, #ea580c)', color: '#fff', border: 'none', padding: '6px 14px', borderRadius: '20px', fontWeight: 700, cursor: 'pointer', display: 'flex', gap: '4px', alignItems: 'center' }}>
+                        <Star size={16} /> Купить Premium
+                    </button>
                 )}
 
                 <button className="btn-secondary" onClick={toggleTheme} style={{ padding: '8px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

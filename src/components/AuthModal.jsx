@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import { authService } from '../api/authService';
+import { useToast } from '../contexts/ToastContext';
 
+/* eslint-disable react/prop-types */
 const AuthModal = ({ isOpen, onClose }) => {
     const [isLogin, setIsLogin] = useState(true);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     const { login } = useAuth();
+    const { showToast } = useToast();
 
     if (!isOpen) return null;
 
@@ -15,25 +18,26 @@ const AuthModal = ({ isOpen, onClose }) => {
         e.preventDefault();
         try {
             if (isLogin) {
-                // actual call to /api/login.php
-                const res = await axios.post('/api/login.php', { email, hash: password });
-                if (res.data.success) {
-                    login(res.data.user);
+                const data = await authService.login(email, password);
+                if (data.success) {
+                    login(data.user);
+                    showToast('Успешный вход!', 'success');
                     onClose();
                 } else {
-                    alert('Login failed: ' + res.data.message);
+                    showToast(data.message, 'error');
                 }
             } else {
-                const res = await axios.post('/api/register.php', { email, hash: password, name });
-                if (res.data.success) {
-                    alert('Registration successful! Please login.');
+                const data = await authService.register(email, password, name);
+                if (data.success) {
+                    showToast('Регистрация успешна! Теперь вы можете войти.', 'success');
                     setIsLogin(true);
                 } else {
-                    alert('Registration failed: ' + res.data.message);
+                    showToast(data.message, 'error');
                 }
             }
         } catch (err) {
-            alert('Network error during authentication.');
+            console.error(err);
+            showToast('Ошибка сети при авторизации.', 'error');
         }
     };
 

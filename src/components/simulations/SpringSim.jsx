@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const SpringSim = () => {
     const canvasRef = useRef(null);
@@ -169,15 +169,15 @@ const SpringSim = () => {
                 <div style={{ display: 'flex', gap: '1rem', flex: 1, flexWrap: 'wrap' }}>
                     <div style={{ flex: 1, minWidth: '150px' }}>
                         <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '4px' }}>Масса (кг): {mass}</label>
-                        <input type="range" min="0.5" max="10" step="0.5" value={mass} onChange={e => setMass(e.target.value)} disabled={isRunning} style={{ width: '100%', accentColor: 'var(--primary)' }} />
+                        <input type="range" min="0.5" max="10" step="0.5" value={mass} onChange={e => setMass(e.target.value)} style={{ width: '100%', accentColor: 'var(--primary)' }} />
                     </div>
                     <div style={{ flex: 1, minWidth: '150px' }}>
                         <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '4px' }}>Жесткость (k): {springK}</label>
-                        <input type="range" min="1" max="50" value={springK} onChange={e => setSpringK(e.target.value)} disabled={isRunning} style={{ width: '100%', accentColor: 'var(--primary)' }} />
+                        <input type="range" min="1" max="50" value={springK} onChange={e => setSpringK(e.target.value)} style={{ width: '100%', accentColor: 'var(--primary)' }} />
                     </div>
                     <div style={{ flex: 1, minWidth: '150px' }}>
                         <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '4px' }}>Смещение X0 (м): {displacement}</label>
-                        <input type="range" min="-10" max="10" value={displacement} onChange={e => setDisplacement(e.target.value)} disabled={isRunning} style={{ width: '100%', accentColor: 'var(--primary)' }} />
+                        <input type="range" min="-10" max="10" value={displacement} onChange={e => setDisplacement(e.target.value)} style={{ width: '100%', accentColor: 'var(--primary)' }} />
                     </div>
                 </div>
 

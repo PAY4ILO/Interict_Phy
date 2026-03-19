@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const PendulumSim = () => {
     const canvasRef = useRef(null);
@@ -66,7 +66,9 @@ const PendulumSim = () => {
         const ctx = canvas.getContext('2d');
 
         const { L, g, dt } = simState.current;
-        let { time, theta, omega } = simState.current;
+        simState.current.L = parseFloat(length);
+        simState.current.g = parseFloat(gravity);
+        let { theta } = simState.current;
 
         // Simple Euler integration for pendulum
         // a = - (g / L) * sin(theta)
@@ -135,11 +137,12 @@ const PendulumSim = () => {
         };
         window.addEventListener('resize', handleResize);
         handleResize();
+        const currentSimState = simState.current;
         return () => {
             window.removeEventListener('resize', handleResize);
-            cancelAnimationFrame(simState.current.animationId);
+            cancelAnimationFrame(currentSimState.animationId);
         };
-        // eslint-disable-next-line
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -155,15 +158,15 @@ const PendulumSim = () => {
                 <div style={{ display: 'flex', gap: '1rem', flex: 1, flexWrap: 'wrap' }}>
                     <div style={{ flex: 1, minWidth: '150px' }}>
                         <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '4px' }}>Длина (м): {length}</label>
-                        <input type="range" min="1" max="10" step="0.5" value={length} onChange={e => setLength(e.target.value)} disabled={isRunning} style={{ width: '100%', accentColor: 'var(--primary)' }} />
+                        <input type="range" min="1" max="10" step="0.5" value={length} onChange={e => setLength(e.target.value)} style={{ width: '100%', accentColor: 'var(--primary)' }} />
                     </div>
                     <div style={{ flex: 1, minWidth: '150px' }}>
                         <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '4px' }}>Гравитация (м/с²): {gravity}</label>
-                        <input type="range" min="1" max="25" step="0.1" value={gravity} onChange={e => setGravity(e.target.value)} disabled={isRunning} style={{ width: '100%', accentColor: 'var(--primary)' }} />
+                        <input type="range" min="1" max="25" step="0.1" value={gravity} onChange={e => setGravity(e.target.value)} style={{ width: '100%', accentColor: 'var(--primary)' }} />
                     </div>
                     <div style={{ flex: 1, minWidth: '150px' }}>
                         <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '4px' }}>Нач. Угол (°): {angle}</label>
-                        <input type="range" min="-90" max="90" value={angle} onChange={e => setAngle(e.target.value)} disabled={isRunning} style={{ width: '100%', accentColor: 'var(--primary)' }} />
+                        <input type="range" min="-90" max="90" value={angle} onChange={e => setAngle(e.target.value)} style={{ width: '100%', accentColor: 'var(--primary)' }} />
                     </div>
                 </div>
 

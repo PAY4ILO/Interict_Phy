@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const GravitySim = () => {
     const canvasRef = useRef(null);
@@ -178,15 +178,15 @@ const GravitySim = () => {
                 <div style={{ display: 'flex', gap: '1rem', flex: 1, flexWrap: 'wrap' }}>
                     <div style={{ flex: 1, minWidth: '150px' }}>
                         <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '4px' }}>Масса планеты (узн.): {planetMass}</label>
-                        <input type="range" min="10" max="300" value={planetMass} onChange={e => setPlanetMass(e.target.value)} disabled={isRunning} style={{ width: '100%', accentColor: 'var(--primary)' }} />
+                        <input type="range" min="10" max="300" value={planetMass} onChange={e => setPlanetMass(e.target.value)} style={{ width: '100%', accentColor: 'var(--primary)' }} />
                     </div>
                     <div style={{ flex: 1, minWidth: '150px' }}>
                         <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '4px' }}>Нач. радиус (у.е.): {initialR}</label>
-                        <input type="range" min="50" max="300" value={initialR} onChange={e => setInitialR(e.target.value)} disabled={isRunning} style={{ width: '100%', accentColor: 'var(--primary)' }} />
+                        <input type="range" min="50" max="300" value={initialR} onChange={e => setInitialR(e.target.value)} style={{ width: '100%', accentColor: 'var(--primary)' }} />
                     </div>
                     <div style={{ flex: 1, minWidth: '150px' }}>
                         <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '4px' }}>Нач. скорость (у.е.): {satelliteV}</label>
-                        <input type="range" min="0" max="10" step="0.1" value={satelliteV} onChange={e => setSatelliteV(e.target.value)} disabled={isRunning} style={{ width: '100%', accentColor: 'var(--primary)' }} />
+                        <input type="range" min="0" max="10" step="0.1" value={satelliteV} onChange={e => setSatelliteV(e.target.value)} style={{ width: '100%', accentColor: 'var(--primary)' }} />
                     </div>
                 </div>
 

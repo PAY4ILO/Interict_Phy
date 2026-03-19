@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 
 const BallisticsSim = () => {
     const canvasRef = useRef(null);
@@ -39,8 +39,31 @@ const BallisticsSim = () => {
         ctx.lineTo(canvas.width, canvas.height - startYOffset);
         ctx.stroke();
 
+        // Draw distance markers (ticks)
+        ctx.beginPath();
+        ctx.strokeStyle = '#9ca3af';
+        ctx.lineWidth = 1;
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#6b7280';
+        ctx.font = '10px monospace';
+        
+        const tickSpacingPhys = 50; // Every 50 meters
+        const firstVisibleTick = Math.floor(cameraX / (scale * tickSpacingPhys)) - 1;
+        const lastVisibleTick = Math.ceil((cameraX + canvas.width) / (scale * tickSpacingPhys)) + 1;
+        
+        for (let i = firstVisibleTick; i <= lastVisibleTick; i++) {
+            if (i < 0) continue;
+            const tickPhysX = i * tickSpacingPhys;
+            const tickScreenX = startX + (tickPhysX * scale) - cameraX;
+            if (tickScreenX >= 0 && tickScreenX <= canvas.width) {
+                ctx.moveTo(tickScreenX, canvas.height - startYOffset);
+                ctx.lineTo(tickScreenX, canvas.height - startYOffset + 8);
+                ctx.fillText(`${tickPhysX}м`, tickScreenX, canvas.height - startYOffset + 20);
+            }
+        }
+        ctx.stroke();
+
         // Draw Trajectory
-        if (isRunning) trajectory.push({ x: physX, y: physY });
         ctx.beginPath();
         ctx.strokeStyle = '#6366f1';
         ctx.lineWidth = 2;
@@ -66,7 +89,7 @@ const BallisticsSim = () => {
         drawArrow(screenX, screenY, 0, -vy * vScale, '#eab308');
     };
 
-    const drawInitialState = () => {
+    const drawInitialState = useCallback(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
         const ctx = canvas.getContext('2d');
@@ -76,7 +99,8 @@ const BallisticsSim = () => {
         simState.current.trajectory = [];
         drawFrame(ctx, canvas, 0, 0, v * Math.cos(aRad), v * Math.sin(aRad));
         setStats({ t: 0, x: 0, y: 0 });
-    };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [velocity, angle]);
 
     const animate = () => {
         const canvas = canvasRef.current;
@@ -96,6 +120,8 @@ const BallisticsSim = () => {
         }
 
         setStats({ t: time, x, y: Math.max(0, y) });
+
+        simState.current.trajectory.push({ x, y: Math.max(0, y) });
 
         if (y < 0 && time > 0) {
             setIsRunning(false);
@@ -138,17 +164,20 @@ const BallisticsSim = () => {
         };
         window.addEventListener('resize', handleResize);
         handleResize();
+        const currentSimState = simState.current;
         return () => {
             window.removeEventListener('resize', handleResize);
-            cancelAnimationFrame(simState.current.animationId);
+            cancelAnimationFrame(currentSimState.animationId);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
         if (!isRunning) {
             drawInitialState();
         }
-    }, [velocity, angle, gravity, isRunning]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [velocity, angle, gravity]);
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', height: '100%' }}>
@@ -157,20 +186,20 @@ const BallisticsSim = () => {
                 <div style={{ display: 'flex', gap: '1rem', flex: 1 }}>
                     <div style={{ flex: 1 }}>
                         <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '4px' }}>Скорость (м/с): {velocity}</label>
-                        <input type="range" min="1" max="100" value={velocity} onChange={e => setVelocity(e.target.value)} disabled={isRunning} style={{ width: '100%', accentColor: 'var(--primary)' }} />
+                        <input type="range" min="1" max="100" value={velocity} onChange={e => setVelocity(e.target.value)} style={{ width: '100%', accentColor: 'var(--primary)' }} />
                     </div>
                     <div style={{ flex: 1 }}>
                         <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '4px' }}>Угол (°): {angle}</label>
-                        <input type="range" min="0" max="90" value={angle} onChange={e => setAngle(e.target.value)} disabled={isRunning} style={{ width: '100%', accentColor: 'var(--primary)' }} />
+                        <input type="range" min="0" max="90" value={angle} onChange={e => setAngle(e.target.value)} style={{ width: '100%', accentColor: 'var(--primary)' }} />
                     </div>
                     <div style={{ flex: 1 }}>
                         <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '4px' }}>Гравитация (м/с²): {gravity}</label>
-                        <input type="range" min="1" max="25" step="0.1" value={gravity} onChange={e => setGravity(e.target.value)} disabled={isRunning} style={{ width: '100%', accentColor: 'var(--primary)' }} />
+                        <input type="range" min="1" max="25" step="0.1" value={gravity} onChange={e => setGravity(e.target.value)} style={{ width: '100%', accentColor: 'var(--primary)' }} />
                     </div>
                 </div>
 
                 <div style={{ display: 'flex', gap: '10px' }}>
-                    <button className="btn-primary" onClick={launch} disabled={isRunning} style={{ minWidth: '120px' }}>
+                    <button className="btn-primary" onClick={launch} style={{ minWidth: '120px' }}>
                         {isRunning ? 'В полете...' : 'ЗАПУСК'}
                     </button>
                     <button className="btn-secondary" onClick={resetSim}>

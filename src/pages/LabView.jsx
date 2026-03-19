@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import axios from 'axios';
 import { ArrowLeft, PlayCircle, FileText } from 'lucide-react';
+import { topicService } from '../api/topicService';
 import BallisticsSim from '../components/simulations/BallisticsSim';
 import InclineSim from '../components/simulations/InclineSim';
 import CircularSim from '../components/simulations/CircularSim';
@@ -17,20 +17,18 @@ const LabView = () => {
     const { id } = useParams();
     const [activeTab, setActiveTab] = useState('theory'); // 'theory' | 'sim'
 
-    const [topicId, setTopicId] = useState(null);
     const [topicData, setTopicData] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         if (id.startsWith('db_')) {
             const tId = id.replace('db_', '');
-            setTopicId(tId);
 
             const fetchTopic = async () => {
                 try {
-                    const res = await axios.get('/api/topics.php');
-                    if (res.data.success) {
-                        const t = res.data.topics.find(t => t.id.toString() === tId);
+                    const data = await topicService.getAllTopics();
+                    if (data.success) {
+                        const t = data.topics.find(t => t.id.toString() === tId);
                         setTopicData(t || null);
                     }
                 } catch (err) {
@@ -80,7 +78,7 @@ const LabView = () => {
                 return (
                     <div className="glass" style={{ padding: '3rem', textAlign: 'center', borderRadius: '12px', color: 'var(--text-muted)' }}>
                         <h2>Для данной пользовательской темы нет интерактивной симуляции.</h2>
-                        <p>Используйте вкладку "Теория" для изучения материала.</p>
+                        <p>Используйте вкладку &quot;Теория&quot; для изучения материала.</p>
                     </div>
                 );
         }

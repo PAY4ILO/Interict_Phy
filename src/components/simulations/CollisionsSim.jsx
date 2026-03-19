@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const CollisionsSim = () => {
     const canvasRef = useRef(null);
@@ -199,17 +199,17 @@ const CollisionsSim = () => {
                 <div style={{ flex: 1, minWidth: '200px', background: 'rgba(59, 130, 246, 0.1)', padding: '1rem', borderRadius: '8px' }}>
                     <h4 style={{ margin: '0 0 10px 0', color: '#3b82f6' }}>Тело 1 (Синее)</h4>
                     <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-muted)' }}>Масса 1 (кг): {m1}</label>
-                    <input type="range" min="1" max="20" value={m1} onChange={e => setM1(e.target.value)} disabled={isRunning} style={{ width: '100%', accentColor: '#3b82f6' }} />
+                    <input type="range" min="1" max="20" value={m1} onChange={e => setM1(e.target.value)} style={{ width: '100%', accentColor: '#3b82f6' }} />
                     <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '10px' }}>Скор. 1 (м/с): {v1}</label>
-                    <input type="range" min="-15" max="15" value={v1} onChange={e => setV1(e.target.value)} disabled={isRunning} style={{ width: '100%', accentColor: '#3b82f6' }} />
+                    <input type="range" min="-15" max="15" value={v1} onChange={e => setV1(e.target.value)} style={{ width: '100%', accentColor: '#3b82f6' }} />
                 </div>
 
                 <div style={{ flex: 1, minWidth: '200px', background: 'rgba(239, 68, 68, 0.1)', padding: '1rem', borderRadius: '8px' }}>
                     <h4 style={{ margin: '0 0 10px 0', color: '#ef4444' }}>Тело 2 (Красное)</h4>
                     <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-muted)' }}>Масса 2 (кг): {m2}</label>
-                    <input type="range" min="1" max="20" value={m2} onChange={e => setM2(e.target.value)} disabled={isRunning} style={{ width: '100%', accentColor: '#ef4444' }} />
+                    <input type="range" min="1" max="20" value={m2} onChange={e => setM2(e.target.value)} style={{ width: '100%', accentColor: '#ef4444' }} />
                     <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '10px' }}>Скор. 2 (м/с): {v2}</label>
-                    <input type="range" min="-15" max="15" value={v2} onChange={e => setV2(e.target.value)} disabled={isRunning} style={{ width: '100%', accentColor: '#ef4444' }} />
+                    <input type="range" min="-15" max="15" value={v2} onChange={e => setV2(e.target.value)} style={{ width: '100%', accentColor: '#ef4444' }} />
                 </div>
 
                 <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>

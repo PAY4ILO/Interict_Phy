@@ -1,11 +1,12 @@
-import React from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import { useToast } from '../contexts/ToastContext';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { User, Shield, Star, LogOut, Package } from 'lucide-react';
 
 const Profile = () => {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
+    const { showToast } = useToast();
 
     if (!user) {
         return <Navigate to="/" />;
@@ -82,7 +83,7 @@ const Profile = () => {
                     </div>
 
                     {user.plan === 'basic' && (
-                        <button className="btn-primary" style={{ marginTop: 'auto', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', background: 'linear-gradient(45deg, #f59e0b, #d97706)', border: 'none' }} onClick={() => alert('Демо: интеграция с платежной системой в разработке.')}>
+                        <button className="btn-primary" style={{ marginTop: 'auto', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', background: 'linear-gradient(45deg, #f59e0b, #d97706)', border: 'none' }} onClick={() => showToast('Демо: интеграция с платежной системой в разработке.', 'info')}>
                             <Shield size={18} /> Улучшить до Premium
                         </button>
                     )}

@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import axios from 'axios';
-import { Save, ArrowLeft, Image as ImageIcon } from 'lucide-react';
+import { ArrowLeft, Save, Image as ImageIcon } from 'lucide-react';
+import { useToast } from '../../contexts/ToastContext';
 import { useAuth } from '../../contexts/AuthContext';
+import { topicService } from '../../api/topicService';
 
 const modules = {
     toolbar: [
@@ -17,8 +18,9 @@ const modules = {
 };
 
 const TopicEditor = () => {
-    const { id } = useParams();
+    const { topicId } = useParams();
     const navigate = useNavigate();
+    const { showToast } = useToast();
     const { user } = useAuth();
 
     const [title, setTitle] = useState('');
@@ -36,12 +38,12 @@ const TopicEditor = () => {
     }, [user, navigate]);
 
     useEffect(() => {
-        if (id) {
+        if (topicId) {
             const fetchTopic = async () => {
                 try {
-                    const res = await axios.get('/api/topics.php?admin=true');
-                    if (res.data.success) {
-                        const topic = res.data.topics.find(t => t.id.toString() === id);
+                    const data = await topicService.getAllTopics(true);
+                    if (data.success) {
+                        const topic = data.topics.find(t => t.id.toString() === topicId);
                         if (topic) {
                             setTitle(topic.title || '');
                             setDescription(topic.description || '');
@@ -52,6 +54,7 @@ const TopicEditor = () => {
                     }
                 } catch (err) {
                     console.error(err);
+                    showToast('Ошибка при загрузке темы', 'error');
                 } finally {
                     setLoading(false);
                 }
@@ -60,26 +63,29 @@ const TopicEditor = () => {
         } else {
             setLoading(false);
         }
-    }, [id]);
+    }, [topicId, showToast]);
 
     const handleSave = async () => {
         try {
             const payload = {
                 action: 'update',
-                id,
+                id: topicId,
                 title,
                 description,
                 theory_content: theoryContent,
                 image_url: imageUrl,
                 is_published: isPublished
             };
-            const res = await axios.post('/api/topics.php', payload);
-            if (res.data.success) {
-                alert('Тема успешно сохранена!');
+            const data = await topicService.updateTopic(payload);
+            if (data.success) {
+                showToast('Тема успешно сохранена!', 'success');
                 navigate('/admin');
+            } else {
+                showToast(data.message || 'Ошибка при сохранении', 'error');
             }
         } catch (err) {
-            alert('Ошибка при сохранении');
+            console.error(err);
+            showToast('Ошибка при сохранении', 'error');
         }
     };
 
@@ -89,16 +95,18 @@ const TopicEditor = () => {
         const formData = new FormData();
         formData.append('image', file);
         try {
-            const res = await axios.post('/api/upload.php', formData, {
+            const data = await topicService.uploadImage(formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
-            if (res.data.success) {
-                setImageUrl(res.data.url);
+            if (data.success) {
+                setImageUrl(data.url);
+                showToast('Изображение успешно загружено!', 'success');
             } else {
-                alert(res.data.message || 'Ошибка загрузки');
+                showToast(data.message || 'Ошибка загрузки изображения', 'error');
             }
         } catch (err) {
-            alert('Ошибка при загрузке изображения');
+            console.error(err);
+            showToast('Ошибка при загрузке изображения', 'error');
         }
     };
 

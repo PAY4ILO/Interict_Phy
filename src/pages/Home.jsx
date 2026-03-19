@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { BookOpen, AlertCircle, Lock } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { useTopics } from '../hooks/useTopics';
+import { useToast } from '../contexts/ToastContext';
 
 const STATIC_TOPICS = [
     { id: 'incline', key: 'incline', title: 'Наклонная плоскость', type: 'Динамика', desc: 'Разложение сил, трение и ускорение бруска.', icon: '📐', free: true },
@@ -18,25 +18,9 @@ const STATIC_TOPICS = [
 
 const Home = () => {
     const { user } = useAuth();
+    const { topics, loading, error } = useTopics();
     const navigate = useNavigate();
-    const [topics, setTopics] = useState([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const fetchTopics = async () => {
-            try {
-                const res = await axios.get('/api/topics.php');
-                if (res.data.success) {
-                    setTopics(res.data.topics);
-                }
-            } catch (err) {
-                console.error('Error fetching dynamic topics:', err);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchTopics();
-    }, []);
+    const { showToast } = useToast();
 
     return (
         <div className="animate-fade-in" style={{ padding: '2rem 0' }}>
@@ -60,7 +44,7 @@ const Home = () => {
                             style={{ textDecoration: 'none', color: 'inherit', borderRadius: '16px', overflow: 'hidden', transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)', display: 'flex', flexDirection: 'column', position: 'relative', cursor: isLocked ? 'not-allowed' : 'pointer', opacity: isLocked ? 0.8 : 1 }}
                             onClick={() => {
                                 if (isLocked) {
-                                    alert('Эта тема доступна только по премиум подписке. Пожалуйста, войдите в аккаунт с доступом.');
+                                    showToast('Эта тема доступна только по премиум подписке!', 'error');
                                 } else {
                                     navigate(`/lab/${topic.key}`);
                                 }
@@ -114,6 +98,8 @@ const Home = () => {
                     </Link>
                 ))}
             </div>
+            {error && <div style={{ textAlign: 'center', color: '#ef4444', marginTop: '2rem' }}>{error}</div>}
+            {loading && <div style={{ textAlign: 'center', marginTop: '2rem', color: 'var(--text-muted)' }}>Загрузка тем...</div>}
         </div>
     );
 };

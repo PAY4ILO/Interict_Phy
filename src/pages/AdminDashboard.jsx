@@ -1,40 +1,23 @@
-import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { PlusCircle, Edit, Eye, EyeOff } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
+import { useTopics } from '../hooks/useTopics';
+import { topicService } from '../api/topicService';
+import { useToast } from '../contexts/ToastContext';
 
 const AdminDashboard = () => {
-    const [topics, setTopics] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const { user } = useAuth();
+    const { topics, loading } = useTopics(true);
     const navigate = useNavigate();
-
-    useEffect(() => {
-        // We fetch all topics passing admin=true
-        const fetchTopics = async () => {
-            try {
-                const res = await axios.get('/api/topics.php?admin=true');
-                if (res.data.success) {
-                    setTopics(res.data.topics);
-                }
-            } catch (err) {
-                console.error('Error fetching topics:', err);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchTopics();
-    }, []);
+    const { showToast } = useToast();
 
     const createNewTopic = async () => {
         try {
-            const res = await axios.post('/api/topics.php', { action: 'create', title: 'Новая Тема' });
-            if (res.data.success) {
-                navigate(`/admin/topic/${res.data.id}`);
+            const data = await topicService.createTopic({ action: 'create', title: 'Новая Тема' });
+            if (data.success) {
+                navigate(`/admin/topic/${data.id}`);
             }
         } catch (err) {
-            alert('Ошибка создания темы');
+            console.error(err);
+            showToast('Ошибка создания темы', 'error');
         }
     };
 
