@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-const TorqueSim = () => {
+const TorqueSim = ({ hideResults = false }) => {
     const canvasRef = useRef(null);
     const containerRef = useRef(null);
     const [m1, setM1] = useState(10);
@@ -133,7 +133,7 @@ const TorqueSim = () => {
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span style={{ color: 'var(--text-muted)' }}>Результ. момент:</span>
-                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{stats.netT.toFixed(1)} Н·м</span>
+                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{hideResults ? '❓' : `${stats.netT.toFixed(1)} Н·м`}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '1rem' }}>
                         <span style={{ fontWeight: 600, color: stats.netT === 0 ? '#10b981' : 'var(--text)' }}>

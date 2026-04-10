@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-const InclineSim = () => {
+const InclineSim = ({ hideResults = false }) => {
     const canvasRef = useRef(null);
     const containerRef = useRef(null);
     const [angle, setAngle] = useState(30);
@@ -197,19 +197,19 @@ const InclineSim = () => {
                     <h3 style={{ margin: 0, borderBottom: '1px solid var(--border)', paddingBottom: '10px' }}>Телеметрия</h3>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span style={{ color: 'var(--text-muted)' }}>Ускорение (a):</span>
-                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{stats.a.toFixed(2)} м/с²</span>
+                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{hideResults ? '❓' : `${stats.a.toFixed(2)} м/с²`}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span style={{ color: 'var(--text-muted)' }}>Время (t):</span>
-                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{stats.t.toFixed(2)} с</span>
+                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{hideResults ? '❓' : `${stats.t.toFixed(2)} с`}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span style={{ color: 'var(--text-muted)' }}>Скорость (v):</span>
-                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{stats.v.toFixed(1)} м/с</span>
+                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{hideResults ? '❓' : `${stats.v.toFixed(1)} м/с`}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span style={{ color: 'var(--text-muted)' }}>Пройденный путь:</span>
-                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{stats.s.toFixed(1)} м</span>
+                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{hideResults ? '❓' : `${stats.s.toFixed(1)} м`}</span>
                     </div>
                 </div>
             </div>

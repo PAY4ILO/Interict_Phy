@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 
-const BallisticsSim = () => {
+const BallisticsSim = ({ hideResults = false }) => {
     const canvasRef = useRef(null);
     const containerRef = useRef(null);
     const [velocity, setVelocity] = useState(25);
@@ -99,7 +99,6 @@ const BallisticsSim = () => {
         simState.current.trajectory = [];
         drawFrame(ctx, canvas, 0, 0, v * Math.cos(aRad), v * Math.sin(aRad));
         setStats({ t: 0, x: 0, y: 0 });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [velocity, angle]);
 
     const animate = () => {
@@ -218,15 +217,15 @@ const BallisticsSim = () => {
                     <h3 style={{ margin: 0, borderBottom: '1px solid var(--border)', paddingBottom: '10px' }}>Телеметрия</h3>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span style={{ color: 'var(--text-muted)' }}>Время (t):</span>
-                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{stats.t.toFixed(2)} с</span>
+                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{hideResults ? '❓' : `${stats.t.toFixed(2)} с`}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span style={{ color: 'var(--text-muted)' }}>Дальность (x):</span>
-                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{stats.x.toFixed(1)} м</span>
+                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{hideResults ? '❓' : `${stats.x.toFixed(1)} м`}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span style={{ color: 'var(--text-muted)' }}>Высота (y):</span>
-                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{stats.y.toFixed(1)} м</span>
+                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{hideResults ? '❓' : `${stats.y.toFixed(1)} м`}</span>
                     </div>
                 </div>
             </div>

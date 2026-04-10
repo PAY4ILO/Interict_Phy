@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-const CircularSim = () => {
+const CircularSim = ({ hideResults = false }) => {
     const canvasRef = useRef(null);
     const containerRef = useRef(null);
     const [radius, setRadius] = useState(20);
@@ -191,19 +191,19 @@ const CircularSim = () => {
                     <h3 style={{ margin: 0, borderBottom: '1px solid var(--border)', paddingBottom: '10px' }}>Телеметрия</h3>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span style={{ color: 'var(--text-muted)' }}>Ускорение ц/с (a):</span>
-                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{stats.a_c.toFixed(2)} м/с²</span>
+                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{hideResults ? '❓' : `${stats.a_c.toFixed(2)} м/с²`}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span style={{ color: 'var(--text-muted)' }}>Сила натяжения (F):</span>
-                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{stats.f_c.toFixed(1)} Н</span>
+                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{hideResults ? '❓' : `${stats.f_c.toFixed(1)} Н`}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span style={{ color: 'var(--text-muted)' }}>Период обр. (T):</span>
-                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{stats.period.toFixed(2)} с</span>
+                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{hideResults ? '❓' : `${stats.period.toFixed(2)} с`}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span style={{ color: 'var(--text-muted)' }}>Время (t):</span>
-                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{stats.t.toFixed(2)} с</span>
+                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{hideResults ? '❓' : `${stats.t.toFixed(2)} с`}</span>
                     </div>
                 </div>
             </div>

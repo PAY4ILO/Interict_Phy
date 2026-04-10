@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-const GravitySim = () => {
+const GravitySim = ({ hideResults = false }) => {
     const canvasRef = useRef(null);
     const containerRef = useRef(null);
 
@@ -209,15 +209,15 @@ const GravitySim = () => {
                     <h3 style={{ margin: 0, borderBottom: '1px solid var(--border)', paddingBottom: '10px' }}>Телеметрия</h3>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span style={{ color: 'var(--text-muted)' }}>Радиус (r):</span>
-                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{stats.r.toFixed(1)}</span>
+                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{hideResults ? '❓' : stats.r.toFixed(1)}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span style={{ color: 'var(--text-muted)' }}>Скорость (v):</span>
-                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{stats.v.toFixed(2)}</span>
+                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{hideResults ? '❓' : stats.v.toFixed(2)}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span style={{ color: 'var(--text-muted)' }}>Орбитальное время:</span>
-                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{stats.t.toFixed(1)}</span>
+                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{hideResults ? '❓' : stats.t.toFixed(1)}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '10px' }}>
                         <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>I Первая космическая: V ≈ {Math.sqrt(simState.current.G * planetMass / initialR).toFixed(2)}</span>

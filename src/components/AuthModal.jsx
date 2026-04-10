@@ -3,7 +3,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { authService } from '../api/authService';
 import { useToast } from '../contexts/ToastContext';
 
-/* eslint-disable react/prop-types */
+ 
 const AuthModal = ({ isOpen, onClose }) => {
     const [isLogin, setIsLogin] = useState(true);
     const [email, setEmail] = useState('');

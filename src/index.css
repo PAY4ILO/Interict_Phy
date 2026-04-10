@@ -198,3 +198,43 @@ body.light-mode .input-premium {
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 1.5rem;
 }
+
+/* Filter Chips */
+.filter-chip:hover {
+  background: var(--border) !important;
+  color: var(--text-main) !important;
+  transform: translateY(-1px);
+}
+
+.filter-chip:active {
+  transform: translateY(0);
+}
+
+/* Reveal on scroll */
+.reveal-card {
+  opacity: 0;
+  transform: translateY(30px) scale(0.97);
+  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-card.reveal-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.reveal-card:hover {
+  transform: translateY(-6px) scale(1);
+  box-shadow: var(--shadow-glow), var(--shadow);
+}
+
+/* Filter bar responsive */
+@media (max-width: 640px) {
+  .filter-bar {
+    padding: 1rem !important;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}

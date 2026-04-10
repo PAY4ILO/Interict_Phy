@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-const PendulumSim = () => {
+const PendulumSim = ({ hideResults = false }) => {
     const canvasRef = useRef(null);
     const containerRef = useRef(null);
     const [length, setLength] = useState(5);
@@ -193,15 +193,15 @@ const PendulumSim = () => {
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span style={{ color: 'var(--text-muted)' }}>Угл. скорость (ω):</span>
-                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{stats.omega.toFixed(2)} рад/с</span>
+                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{hideResults ? '❓' : `${stats.omega.toFixed(2)} рад/с`}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span style={{ color: 'var(--text-muted)' }}>Период (T):</span>
-                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{stats.period.toFixed(2)} с</span>
+                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{hideResults ? '❓' : `${stats.period.toFixed(2)} с`}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span style={{ color: 'var(--text-muted)' }}>Время (t):</span>
-                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{stats.t.toFixed(2)} с</span>
+                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{hideResults ? '❓' : `${stats.t.toFixed(2)} с`}</span>
                     </div>
                 </div>
             </div>

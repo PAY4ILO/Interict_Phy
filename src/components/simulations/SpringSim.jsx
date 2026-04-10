@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-const SpringSim = () => {
+const SpringSim = ({ hideResults = false }) => {
     const canvasRef = useRef(null);
     const containerRef = useRef(null);
 
@@ -204,19 +204,19 @@ const SpringSim = () => {
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span style={{ color: 'var(--text-muted)' }}>Период (T):</span>
-                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{stats.period.toFixed(2)} с</span>
+                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{hideResults ? '❓' : `${stats.period.toFixed(2)} с`}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span style={{ color: 'var(--text-muted)' }}>Текущий X:</span>
-                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{stats.x.toFixed(2)} м</span>
+                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{hideResults ? '❓' : `${stats.x.toFixed(2)} м`}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span style={{ color: 'var(--text-muted)' }}>Скорость (v):</span>
-                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{stats.v.toFixed(2)} м/с</span>
+                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{hideResults ? '❓' : `${stats.v.toFixed(2)} м/с`}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span style={{ color: 'var(--text-muted)' }}>Время (t):</span>
-                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{stats.t.toFixed(2)} с</span>
+                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{hideResults ? '❓' : `${stats.t.toFixed(2)} с`}</span>
                     </div>
                 </div>
             </div>

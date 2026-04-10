@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-const GasSim = () => {
+const GasSim = ({ hideResults = false }) => {
     const canvasRef = useRef(null);
     const containerRef = useRef(null);
 
@@ -260,24 +260,24 @@ const GasSim = () => {
                     <h3 style={{ margin: 0, borderBottom: '1px solid var(--border)', paddingBottom: '10px' }}>Телеметрия</h3>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span style={{ color: 'var(--text-muted)' }}>Давление (P):</span>
-                        <span style={{ fontWeight: 600, fontFamily: 'monospace', color: '#f59e0b' }}>{stats.pressure.toFixed(1)} Pа</span>
+                        <span style={{ fontWeight: 600, fontFamily: 'monospace', color: '#f59e0b' }}>{hideResults ? '❓' : `${stats.pressure.toFixed(1)} Pа`}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span style={{ color: 'var(--text-muted)' }}>Объем (V):</span>
-                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{volume}</span>
+                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{hideResults ? '❓' : volume}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span style={{ color: 'var(--text-muted)' }}>Темп. (T):</span>
-                        <span style={{ fontWeight: 600, fontFamily: 'monospace', color: '#ef4444' }}>{temperature} K</span>
+                        <span style={{ fontWeight: 600, fontFamily: 'monospace', color: '#ef4444' }}>{hideResults ? '❓' : `${temperature} K`}</span>
                     </div>
                     <h3 style={{ margin: 0, borderBottom: '1px solid var(--border)', paddingBottom: '10px', marginTop: '10px' }}>Уравнение Менделеева-Клапейрона</h3>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span style={{ color: 'var(--text-muted)' }}>P × V:</span>
-                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{stats.pV.toFixed(0)}</span>
+                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{hideResults ? '❓' : stats.pV.toFixed(0)}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span style={{ color: 'var(--text-muted)' }}>n × R × T:</span>
-                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{stats.nRT.toFixed(0)}</span>
+                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{hideResults ? '❓' : stats.nRT.toFixed(0)}</span>
                     </div>
                 </div>
             </div>

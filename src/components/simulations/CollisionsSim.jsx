@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-const CollisionsSim = () => {
+const CollisionsSim = ({ hideResults = false }) => {
     const canvasRef = useRef(null);
     const containerRef = useRef(null);
 
@@ -244,7 +244,7 @@ const CollisionsSim = () => {
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span style={{ color: 'var(--text-muted)' }}>Кин. Энергия (E):</span>
-                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{stats.eTotal.toFixed(1)} Дж</span>
+                        <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{hideResults ? '❓' : `${stats.eTotal.toFixed(1)} Дж`}</span>
                     </div>
                 </div>
             </div>
